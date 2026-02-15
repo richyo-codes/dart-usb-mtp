@@ -1,0 +1,27 @@
+name: usb_sync
+description: Generic USB device discovery and file access abstraction for Flutter.
+version: 0.1.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.local.usb_sync
+        pluginClass: UsbSyncPlugin
+      linux:
+        pluginClass: UsbSyncPlugin
