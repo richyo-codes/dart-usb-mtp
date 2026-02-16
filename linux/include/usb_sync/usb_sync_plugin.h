@@ -3,11 +3,18 @@
 
 #include <flutter_linux/flutter_linux.h>
 
+#ifdef FLUTTER_PLUGIN_IMPL
+#define FLUTTER_PLUGIN_EXPORT __attribute__((visibility("default")))
+#else
+#define FLUTTER_PLUGIN_EXPORT
+#endif
+
 G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE(UsbSyncPlugin, usb_sync_plugin, USB_SYNC, PLUGIN, GObject)
 
-void usb_sync_plugin_register_with_registrar(FlPluginRegistrar* registrar);
+FLUTTER_PLUGIN_EXPORT void usb_sync_plugin_register_with_registrar(
+    FlPluginRegistrar* registrar);
 
 G_END_DECLS
 
