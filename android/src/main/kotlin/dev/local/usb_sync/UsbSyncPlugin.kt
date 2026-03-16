@@ -280,7 +280,7 @@ class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
             return
         }
 
-        val sizeLong = info.compressedSize
+        val sizeLong = info.compressedSize.toLong()
         if (sizeLong < 0) {
             result.error("read_failed", "Invalid object size for path: $path", null)
             return
@@ -462,7 +462,7 @@ class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
             val sizeBytes = if (isDirectory) {
                 null
             } else {
-                toIntOrNull(info.compressedSize)
+                toIntOrNull(info.compressedSize.toLong())
             }
             children.add(
                 ResolvedNode(
