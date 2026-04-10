@@ -1,0 +1,59 @@
+name: Build Example Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      BUILD_MODE: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Compute artifact version
+        run: echo "ARTIFACT_VERSION=$(./tools/artifact_version.sh)" >> "$GITHUB_ENV"
+
+      - name: Install example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Build Android example APK
+        working-directory: example
+        run: flutter build apk --release
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p dist
+          cp example/build/app/outputs/flutter-apk/app-release.apk "dist/usb_sync_example-android-universal-${ARTIFACT_VERSION}.apk"
+
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: usb_sync_example-android-universal-${{ env.ARTIFACT_VERSION }}
+          path: dist/usb_sync_example-android-universal-${{ env.ARTIFACT_VERSION }}.apk
+          if-no-files-found: error

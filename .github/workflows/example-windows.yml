@@ -1,0 +1,52 @@
+name: Build Example Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    env:
+      BUILD_MODE: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Compute artifact version
+        shell: bash
+        run: echo "ARTIFACT_VERSION=$(./tools/artifact_version.sh)" >> "$GITHUB_ENV"
+
+      - name: Install example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Build Windows example bundle
+        working-directory: example
+        run: flutter build windows --release
+
+      - name: Package Windows artifact
+        run: ./tools/package_windows_example.ps1 -ArtifactVersion $env:ARTIFACT_VERSION
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}
+          path: dist/usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
+          if-no-files-found: error
