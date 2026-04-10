@@ -544,9 +544,15 @@ bool TryMountMtpViaGio(int bus_num, int dev_num, std::string* error_out) {
     return true;
   }
 
+  std::string open_error;
+  if (RunCommand({"gio", "open", uri}, &open_error)) {
+    return true;
+  }
+
   if (error_out != nullptr) {
     *error_out = "gio mount failed for URI '" + uri + "'. " + primary_error +
-                 " Fallback error: " + fallback_error;
+                 " Fallback error: " + fallback_error +
+                 " gio open error: " + open_error;
   }
   return false;
 }
