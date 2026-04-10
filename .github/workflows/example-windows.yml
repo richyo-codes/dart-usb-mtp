@@ -45,8 +45,11 @@ jobs:
         run: ./tools/package_windows_example.ps1 -ArtifactVersion $env:ARTIFACT_VERSION
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
+        uses: richnetdesign/git-artifact-upload@v2
         with:
-          name: usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}
+          name: windows-x64
+          version: ${{ env.ARTIFACT_VERSION }}
+          filename: usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
           path: dist/usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
           if-no-files-found: error
+          retention-days: 7
