@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.14)
 
-set(PROJECT_NAME "usb_sync")
+set(PROJECT_NAME "usb_mtp_client")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 cmake_policy(VERSION 3.14...3.25)
 
-set(PLUGIN_NAME "usb_sync_plugin")
+set(PLUGIN_NAME "usb_mtp_client_plugin")
 
 list(APPEND PLUGIN_SOURCES
-  "usb_sync_plugin.cpp"
-  "usb_sync_plugin.h"
+  "usb_mtp_client_plugin.cpp"
+  "usb_mtp_client_plugin.h"
 )
 
 add_library(${PLUGIN_NAME} SHARED
-  "include/usb_sync/usb_sync_c_api.h"
+  "include/usb_mtp_client/usb_sync_c_api.h"
   "usb_sync_c_api.cpp"
   ${PLUGIN_SOURCES}
 )
@@ -39,7 +39,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
   propsys
 )
 
-set(usb_sync_bundled_libraries
+set(usb_mtp_client_bundled_libraries
   ""
   PARENT_SCOPE
 )

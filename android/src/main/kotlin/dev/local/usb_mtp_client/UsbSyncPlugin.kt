@@ -1,4 +1,4 @@
-package dev.local.usb_sync
+package dev.local.usb_mtp_client
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -20,7 +20,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import java.util.Locale
 
 private const val MTP_FORMAT_ASSOCIATION = 0x3001
-private const val USB_PERMISSION_ACTION = "dev.local.usb_sync.USB_PERMISSION"
+private const val USB_PERMISSION_ACTION = "dev.local.usb_mtp_client.USB_PERMISSION"
 
 class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
@@ -57,7 +57,7 @@ class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         appContext = binding.applicationContext
         usbManager = appContext.getSystemService(Context.USB_SERVICE) as UsbManager
-        channel = MethodChannel(binding.binaryMessenger, "usb_sync")
+        channel = MethodChannel(binding.binaryMessenger, "usb_mtp_client")
         channel.setMethodCallHandler(this)
         registerPermissionReceiver()
     }
@@ -80,7 +80,7 @@ class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
         pendingOpenResults.values.flatten().forEach {
-            it.error("channel_detached", "usb_sync plugin detached.", null)
+            it.error("channel_detached", "usb_mtp_client plugin detached.", null)
         }
         pendingOpenResults.clear()
         closeAllSessions()
@@ -154,7 +154,7 @@ class UsbSyncPlugin : FlutterPlugin, MethodCallHandler {
         if (!transports.contains("mtp")) {
             result.error(
                 "unsupported_transport",
-                "Android usb_sync currently supports only MTP sessions.",
+                "Android usb_mtp_client currently supports only MTP sessions.",
                 null,
             )
             return

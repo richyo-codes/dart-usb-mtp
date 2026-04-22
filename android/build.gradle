@@ -1,4 +1,4 @@
-group = "dev.local.usb_sync"
+group = "dev.local.usb_mtp_client"
 version = "1.0-SNAPSHOT"
 
 buildscript {
@@ -25,7 +25,7 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 android {
-    namespace = "dev.local.usb_sync"
+    namespace = "dev.local.usb_mtp_client"
     compileSdk = 34
 
     defaultConfig {

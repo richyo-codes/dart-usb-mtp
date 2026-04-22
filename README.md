@@ -1,6 +1,6 @@
-# usb_sync
+# usb_mtp_client
 
-Reusable Flutter plugin for USB device discovery and file access.
+Reusable Flutter plugin for USB MTP device discovery and file access.
 
 Status:
 - API scaffolded
@@ -15,7 +15,7 @@ Status:
 
 Designed usage:
 - app code provides filters (for example Garmin VID/PID)
-- package stays vendor-agnostic
+- package stays vendor-agnostic within USB MTP devices
 
 Example app:
 - `cd example`

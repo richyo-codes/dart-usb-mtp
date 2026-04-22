@@ -7,7 +7,7 @@ import "usb_sync_exception.dart";
 import "usb_sync_platform_interface.dart";
 
 class MethodChannelUsbSync extends UsbSyncPlatform {
-  static const MethodChannel _channel = MethodChannel("usb_sync");
+  static const MethodChannel _channel = MethodChannel("usb_mtp_client");
 
   @override
   Future<List<UsbDeviceInfo>> listDevices({

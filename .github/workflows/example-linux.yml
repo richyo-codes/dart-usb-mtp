@@ -53,7 +53,7 @@ jobs:
         with:
           name: linux-x64
           version: ${{ env.ARTIFACT_VERSION }}
-          filename: usb_sync_example-linux-x64-${{ env.ARTIFACT_VERSION }}.tar.gz
-          path: dist/usb_sync_example-linux-x64-${{ env.ARTIFACT_VERSION }}.tar.gz
+          filename: usb_mtp_client_example-linux-x64-${{ env.ARTIFACT_VERSION }}.tar.gz
+          path: dist/usb_mtp_client_example-linux-x64-${{ env.ARTIFACT_VERSION }}.tar.gz
           if-no-files-found: error
           retention-days: 7

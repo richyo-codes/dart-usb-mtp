@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.13)
-project(usb_sync_plugin LANGUAGES CXX)
+project(usb_mtp_client_plugin LANGUAGES CXX)
 
-set(PLUGIN_NAME "usb_sync_plugin")
+set(PLUGIN_NAME "usb_mtp_client_plugin")
 
 add_library(${PLUGIN_NAME} SHARED
-  "usb_sync_plugin.cc"
+  "usb_mtp_client_plugin.cc"
 )
 
 apply_standard_settings(${PLUGIN_NAME})
@@ -17,7 +17,7 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter)
 target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
 
-set(usb_sync_bundled_libraries
+set(usb_mtp_client_bundled_libraries
   ""
   PARENT_SCOPE
 )

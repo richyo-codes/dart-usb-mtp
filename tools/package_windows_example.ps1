@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $BundleDir = Join-Path $RepoRoot "example/build/windows/x64/runner/Release"
 $DistDir = Join-Path $RepoRoot "dist"
-$ArtifactName = "usb_sync_example-windows-x64-$ArtifactVersion.zip"
+$ArtifactName = "usb_mtp_client_example-windows-x64-$ArtifactVersion.zip"
 $ArtifactPath = Join-Path $DistDir $ArtifactName
 
 New-Item -ItemType Directory -Force -Path $DistDir | Out-Null

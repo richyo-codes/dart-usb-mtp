@@ -1,4 +1,4 @@
-#include "include/usb_sync/usb_sync_plugin.h"
+#include "include/usb_mtp_client/usb_sync_plugin.h"
 
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
@@ -1140,7 +1140,7 @@ void usb_sync_plugin_register_with_registrar(FlPluginRegistrar* registrar) {
   g_autoptr(FlStandardMethodCodec) codec = fl_standard_method_codec_new();
   g_autoptr(FlMethodChannel) channel =
       fl_method_channel_new(fl_plugin_registrar_get_messenger(registrar),
-                            "usb_sync",
+                            "usb_mtp_client",
                             FL_METHOD_CODEC(codec));
   fl_method_channel_set_method_call_handler(channel, method_call_cb,
                                             g_object_ref(plugin),

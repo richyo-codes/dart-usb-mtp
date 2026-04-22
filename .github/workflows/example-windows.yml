@@ -49,7 +49,7 @@ jobs:
         with:
           name: windows-x64
           version: ${{ env.ARTIFACT_VERSION }}
-          filename: usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
-          path: dist/usb_sync_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
+          filename: usb_mtp_client_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
+          path: dist/usb_mtp_client_example-windows-x64-${{ env.ARTIFACT_VERSION }}.zip
           if-no-files-found: error
           retention-days: 7

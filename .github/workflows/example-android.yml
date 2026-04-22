@@ -49,14 +49,14 @@ jobs:
       - name: Prepare artifact
         run: |
           mkdir -p dist
-          cp example/build/app/outputs/flutter-apk/app-release.apk "dist/usb_sync_example-android-universal-${ARTIFACT_VERSION}.apk"
+          cp example/build/app/outputs/flutter-apk/app-release.apk "dist/usb_mtp_client_example-android-universal-${ARTIFACT_VERSION}.apk"
 
       - name: Upload Android artifact
         uses: richnetdesign/git-artifact-upload@v2
         with:
           name: android-apk
           version: ${{ env.ARTIFACT_VERSION }}
-          filename: usb_sync_example-android-universal-${{ env.ARTIFACT_VERSION }}.apk
-          path: dist/usb_sync_example-android-universal-${{ env.ARTIFACT_VERSION }}.apk
+          filename: usb_mtp_client_example-android-universal-${{ env.ARTIFACT_VERSION }}.apk
+          path: dist/usb_mtp_client_example-android-universal-${{ env.ARTIFACT_VERSION }}.apk
           if-no-files-found: error
           retention-days: 7

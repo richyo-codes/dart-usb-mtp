@@ -1,8 +1,8 @@
-#include "include/usb_sync/usb_sync_c_api.h"
+#include "include/usb_mtp_client/usb_sync_c_api.h"
 
 #include <flutter/plugin_registrar_windows.h>
 
-#include "usb_sync_plugin.h"
+#include "usb_mtp_client_plugin.h"
 
 void UsbSyncCApiRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {

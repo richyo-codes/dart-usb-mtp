@@ -1,5 +1,5 @@
-name: usb_sync
-description: Generic USB device discovery and file access abstraction for Flutter.
+name: usb_mtp_client
+description: Flutter plugin for USB MTP device discovery and file access.
 version: 0.1.0
 publish_to: "none"
 
@@ -21,7 +21,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.local.usb_sync
+        package: dev.local.usb_mtp_client
         pluginClass: UsbSyncPlugin
       linux:
         pluginClass: UsbSyncPlugin

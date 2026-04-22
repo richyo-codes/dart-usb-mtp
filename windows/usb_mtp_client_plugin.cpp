@@ -1,4 +1,4 @@
-#include "usb_sync_plugin.h"
+#include "usb_mtp_client_plugin.h"
 
 #include <flutter/encodable_value.h>
 #include <flutter/method_channel.h>
@@ -378,7 +378,7 @@ HRESULT CreateClientInfo(ComPtr<IPortableDeviceValues>* client_info) {
   if (FAILED(hr)) {
     return hr;
   }
-  values->SetStringValue(WPD_CLIENT_NAME, L"usb_sync");
+  values->SetStringValue(WPD_CLIENT_NAME, L"usb_mtp_client");
   values->SetUnsignedIntegerValue(WPD_CLIENT_MAJOR_VERSION, 0);
   values->SetUnsignedIntegerValue(WPD_CLIENT_MINOR_VERSION, 1);
   values->SetUnsignedIntegerValue(WPD_CLIENT_REVISION, 0);
@@ -911,7 +911,7 @@ void UsbSyncPlugin::RegisterWithRegistrar(
     flutter::PluginRegistrarWindows* registrar) {
   auto channel =
       std::make_unique<flutter::MethodChannel<EncodableValue>>(
-          registrar->messenger(), "usb_sync",
+          registrar->messenger(), "usb_mtp_client",
           &flutter::StandardMethodCodec::GetInstance());
 
   auto plugin = std::make_unique<UsbSyncPlugin>();
