@@ -1,4 +1,4 @@
-package com.example.usb_sync_example
+package com.example.usb_mtp_client_example
 
 import io.flutter.embedding.android.FlutterActivity
 

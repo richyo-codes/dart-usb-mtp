@@ -1,4 +1,4 @@
-# usb_sync_example
+# usb_mtp_client_example
 
 A new Flutter project.
 

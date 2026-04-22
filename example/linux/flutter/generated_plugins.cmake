@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  usb_sync
+  usb_mtp_client
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

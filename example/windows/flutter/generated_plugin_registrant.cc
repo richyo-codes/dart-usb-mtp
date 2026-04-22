@@ -6,7 +6,7 @@
 
 #include "generated_plugin_registrant.h"
 
-#include <usb_sync/usb_sync_c_api.h>
+#include <usb_mtp_client/usb_sync_c_api.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   UsbSyncCApiRegisterWithRegistrar(

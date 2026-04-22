@@ -1,5 +1,5 @@
-name: usb_sync_example
-description: "Manual test app for the usb_sync plugin."
+name: usb_mtp_client_example
+description: "Manual test app for the usb_mtp_client plugin."
 publish_to: "none"
 version: 1.0.0+1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  usb_sync:
+  usb_mtp_client:
     path: ../
 
 dev_dependencies:
