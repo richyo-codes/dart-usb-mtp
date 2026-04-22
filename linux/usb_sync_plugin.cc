@@ -377,6 +377,13 @@ std::string Pad3(int value) {
   return stream.str();
 }
 
+std::string Pad4Hex(int value) {
+  std::ostringstream stream;
+  stream << std::hex << std::nouppercase << std::setw(4) << std::setfill('0')
+         << value;
+  return stream.str();
+}
+
 std::filesystem::path GvfsMountRoot() {
   return std::filesystem::path("/run/user") /
          std::to_string(static_cast<uint64_t>(getuid())) / "gvfs";
@@ -515,13 +522,22 @@ bool RunCommand(const std::vector<std::string>& args, std::string* error_out) {
   return true;
 }
 
-bool TryMountMtpViaGio(int bus_num, int dev_num, std::string* error_out) {
-  if (bus_num <= 0 || dev_num <= 0) {
-    if (error_out != nullptr) {
-      *error_out = "Missing bus/dev number.";
-    }
-    return false;
+std::vector<std::string> BuildMtpCandidateUris(const UsbDeviceRecord& device) {
+  std::vector<std::string> uris;
+  if (device.vendor_id > 0 && device.product_id > 0 &&
+      !device.serial_number.empty()) {
+    uris.push_back("mtp://" + Pad4Hex(device.vendor_id) + "_" +
+                   Pad4Hex(device.product_id) + "_" + device.serial_number +
+                   "/");
   }
+  if (device.bus_num > 0 && device.dev_num > 0) {
+    uris.push_back("mtp://[usb:" + Pad3(device.bus_num) + "," +
+                   Pad3(device.dev_num) + "]/");
+  }
+  return uris;
+}
+
+bool TryMountMtpViaGio(const UsbDeviceRecord& device, std::string* error_out) {
   if (!HasGioCommand()) {
     if (error_out != nullptr) {
       *error_out = "gio executable not found in PATH.";
@@ -529,30 +545,52 @@ bool TryMountMtpViaGio(int bus_num, int dev_num, std::string* error_out) {
     return false;
   }
 
-  const std::string bus = Pad3(bus_num);
-  const std::string dev = Pad3(dev_num);
-  const std::string uri = "mtp://[usb:" + bus + "," + dev + "]/";
-
-  std::string primary_error;
-  if (RunCommand({"gio", "mount", uri}, &primary_error)) {
-    return true;
+  const auto uris = BuildMtpCandidateUris(device);
+  if (uris.empty()) {
+    if (error_out != nullptr) {
+      *error_out = "Missing USB identifiers needed for MTP mount.";
+    }
+    return false;
   }
 
-  const std::string node = "/dev/bus/usb/" + bus + "/" + dev;
-  std::string fallback_error;
-  if (RunCommand({"gio", "mount", "-d", node}, &fallback_error)) {
-    return true;
+  std::vector<std::string> errors;
+  for (const auto& uri : uris) {
+    std::string mount_error;
+    if (RunCommand({"gio", "mount", uri}, &mount_error)) {
+      return true;
+    }
+    if (!mount_error.empty()) {
+      errors.push_back("gio mount " + uri + ": " + mount_error);
+    }
+
+    std::string open_error;
+    if (RunCommand({"gio", "open", uri}, &open_error)) {
+      return true;
+    }
+    if (!open_error.empty()) {
+      errors.push_back("gio open " + uri + ": " + open_error);
+    }
   }
 
-  std::string open_error;
-  if (RunCommand({"gio", "open", uri}, &open_error)) {
-    return true;
+  if (device.bus_num > 0 && device.dev_num > 0) {
+    const std::string node =
+        "/dev/bus/usb/" + Pad3(device.bus_num) + "/" + Pad3(device.dev_num);
+    std::string node_error;
+    if (RunCommand({"gio", "mount", "-d", node}, &node_error)) {
+      return true;
+    }
+    if (!node_error.empty()) {
+      errors.push_back("gio mount -d " + node + ": " + node_error);
+    }
   }
 
   if (error_out != nullptr) {
-    *error_out = "gio mount failed for URI '" + uri + "'. " + primary_error +
-                 " Fallback error: " + fallback_error +
-                 " gio open error: " + open_error;
+    std::ostringstream stream;
+    stream << "gio mount failed.";
+    for (const auto& error : errors) {
+      stream << " " << error;
+    }
+    *error_out = stream.str();
   }
   return false;
 }
@@ -577,7 +615,7 @@ std::optional<std::filesystem::path> EnsureMtpMountPath(
   }
 
   std::string mount_error;
-  if (!TryMountMtpViaGio(device.bus_num, device.dev_num, &mount_error)) {
+  if (!TryMountMtpViaGio(device, &mount_error)) {
     if (error_out != nullptr) {
       *error_out = mount_error;
     }
