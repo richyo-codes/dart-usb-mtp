@@ -105,7 +105,7 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
               children: <Widget>[
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _transportFilter,
+                    initialValue: _transportFilter,
                     decoration: const InputDecoration(
                       labelText: "Transport filter",
                       border: OutlineInputBorder(),
